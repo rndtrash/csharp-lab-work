@@ -1,0 +1,75 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Laba16.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:avalonia="http://oxyplot.org/avalonia"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Laba16.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Algo">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+
+    <Grid
+        RowDefinitions="Auto, *"
+        ColumnDefinitions="*">
+        <StackPanel
+            Grid.Row="0"
+            Orientation="Horizontal">
+            <Label VerticalAlignment="Center">A:</Label>
+            <NumericUpDown Increment="0.1"
+                           Value="{Binding Model.A}" />
+
+            <Label VerticalAlignment="Center">B:</Label>
+            <NumericUpDown Increment="0.1"
+                           Value="{Binding Model.B}" />
+
+            <Button
+                Command="{Binding RenderPlotCommand}">
+                Построить
+            </Button>
+
+            <Button
+                Command="{Binding ClearPlotCommand}">
+                Очистить
+            </Button>
+        </StackPanel>
+
+        <avalonia:Plot Grid.Row="1"
+                       PlotMargins="50 50 50 50"
+                       PlotAreaBorderColor="#999999"
+                       PlotType="Cartesian">
+            <avalonia:Plot.Axes>
+                <avalonia:LinearAxis Position="Bottom" Title="X" Minimum="{Binding Path=From}" Maximum="{Binding Path=To}" />
+                <avalonia:LinearAxis Position="Left" Title="Y" />
+            </avalonia:Plot.Axes>
+
+            <avalonia:Plot.Series>
+                <avalonia:LineSeries
+                    DataFieldX="X"
+                    DataFieldY="Y"
+                    Items="{Binding Path=GraphPointSeries}"
+                    Color="Green" />
+            </avalonia:Plot.Series>
+
+            <avalonia:Plot.Annotations>
+                <!--X="{Binding Path=Model.Minimum}"-->
+                <avalonia:LineAnnotation
+                    X="{Binding Path=Minimum}"
+                    Text="Минимум"
+                    Color="Red"
+                    Type="Vertical" />
+                <!--X="{Binding Path=Model.Maximum}"-->
+                <avalonia:LineAnnotation
+                    X="{Binding Path=Maximum}"
+                    Text="Максимум"
+                    Color="Blue"
+                    Type="Vertical" />
+            </avalonia:Plot.Annotations>
+        </avalonia:Plot>
+    </Grid>
+
+</Window>
